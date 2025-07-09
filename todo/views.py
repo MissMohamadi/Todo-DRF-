@@ -9,8 +9,7 @@ from rest_framework.views import APIView
 from .serializers import TodoSerializers
 from rest_framework import status
 from .models import Todo
-
-
+from rest_framework import generics,mixins
 
 
 #region functiohn view
@@ -99,3 +98,28 @@ class TodoDetailView(APIView):
 
 #endregion
 
+#region Mixins ApiView
+class TodoListMixinsApiview(mixins.ListModelMixin,mixins.CreateModelMixin,generics.GenericAPIView):
+
+    queryset = Todo.objects.order_by('priority').all()
+    serializer_class = TodoSerializers
+
+    def get(self,request : Request):
+        return self.list(request)
+
+    def post(self, request : Request):
+        return self.create(request)
+
+class TodoDetailMixinsApiView(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin, generics.GenericAPIView):
+    queryset = Todo.objects.order_by('priority').all()
+    serializer_class = TodoSerializers
+
+    def get(self, request : Request, pk : int):
+        return self.retrieve(request, pk)
+
+    def put(self, request : Request, pk : int):
+        return self.update(request, pk)
+
+    def delete(self, request : Request, pk : int):
+        return self.destroy(request, pk)
+#endregion
