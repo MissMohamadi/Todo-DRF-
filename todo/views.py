@@ -123,3 +123,15 @@ class TodoDetailMixinsApiView(mixins.RetrieveModelMixin, mixins.UpdateModelMixin
     def delete(self, request : Request, pk : int):
         return self.destroy(request, pk)
 #endregion
+
+#region Generic Base View
+
+class TodoListGenericApiView(generics.ListCreateAPIView):
+    queryset = Todo.objects.order_by('priority').all()
+    serializer_class = TodoSerializers
+
+class TodoDetailGenericApiView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Todo.objects.order_by('priority').all()
+    serializer_class = TodoSerializers
+
+#endregion
