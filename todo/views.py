@@ -10,7 +10,7 @@ from .serializers import TodoSerializers
 from rest_framework import status
 from .models import Todo
 from rest_framework import generics,mixins
-
+from rest_framework import viewsets
 
 #region functiohn view
 @api_view(['GET', 'POST'])
@@ -131,6 +131,14 @@ class TodoListGenericApiView(generics.ListCreateAPIView):
     serializer_class = TodoSerializers
 
 class TodoDetailGenericApiView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Todo.objects.order_by('priority').all()
+    serializer_class = TodoSerializers
+
+#endregion
+
+#region ViewSets
+
+class TodoViewSetsApiView(viewsets.ModelViewSet):
     queryset = Todo.objects.order_by('priority').all()
     serializer_class = TodoSerializers
 
