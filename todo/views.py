@@ -9,6 +9,8 @@ from .models import Todo, User
 from rest_framework import generics,mixins
 from rest_framework import viewsets
 from rest_framework.pagination import PageNumberPagination,LimitOffsetPagination
+from rest_framework.authentication import BaseAuthentication, BasicAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 class ToDoPaginationApiView(PageNumberPagination):
     page_size = 1
@@ -133,10 +135,13 @@ class TodoListGenericApiView(generics.ListCreateAPIView):
     queryset = Todo.objects.order_by('priority').all()
     serializer_class = TodoSerializers
     pagination_class = LimitOffsetPagination
+    authentication_classes =[BasicAuthentication]
+    permission_classes = [IsAuthenticated]
 
 class TodoDetailGenericApiView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Todo.objects.order_by('priority').all()
     serializer_class = TodoSerializers
+
 
 #endregion
 
@@ -146,6 +151,7 @@ class TodoViewSetsApiView(viewsets.ModelViewSet):
     queryset = Todo.objects.order_by('priority').all()
     serializer_class = TodoSerializers
 
+
 #endregion
 
 #region User Generic ApiView
@@ -154,5 +160,6 @@ class UserGenericApiView(generics.ListAPIView):
 
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
 
 #endregion
