@@ -8,6 +8,10 @@ from rest_framework import status
 from .models import Todo, User
 from rest_framework import generics,mixins
 from rest_framework import viewsets
+from rest_framework.pagination import PageNumberPagination,LimitOffsetPagination
+
+class ToDoPaginationApiView(PageNumberPagination):
+    page_size = 1
 
 
 #region functiohn view
@@ -101,6 +105,7 @@ class TodoListMixinsApiview(mixins.ListModelMixin,mixins.CreateModelMixin,generi
 
     queryset = Todo.objects.order_by('priority').all()
     serializer_class = TodoSerializers
+    pagination_class = ToDoPaginationApiView
 
     def get(self,request : Request):
         return self.list(request)
@@ -127,6 +132,7 @@ class TodoDetailMixinsApiView(mixins.RetrieveModelMixin, mixins.UpdateModelMixin
 class TodoListGenericApiView(generics.ListCreateAPIView):
     queryset = Todo.objects.order_by('priority').all()
     serializer_class = TodoSerializers
+    pagination_class = LimitOffsetPagination
 
 class TodoDetailGenericApiView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Todo.objects.order_by('priority').all()
