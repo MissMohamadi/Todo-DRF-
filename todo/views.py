@@ -1,16 +1,14 @@
 from urllib import request
-
-from django.core.serializers import serialize
-from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .serializers import TodoSerializers
+from .serializers import TodoSerializers, UserSerializer
 from rest_framework import status
-from .models import Todo
+from .models import Todo, User
 from rest_framework import generics,mixins
 from rest_framework import viewsets
+
 
 #region functiohn view
 @api_view(['GET', 'POST'])
@@ -141,5 +139,14 @@ class TodoDetailGenericApiView(generics.RetrieveUpdateDestroyAPIView):
 class TodoViewSetsApiView(viewsets.ModelViewSet):
     queryset = Todo.objects.order_by('priority').all()
     serializer_class = TodoSerializers
+
+#endregion
+
+#region User Generic ApiView
+
+class UserGenericApiView(generics.ListAPIView):
+
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
 
 #endregion

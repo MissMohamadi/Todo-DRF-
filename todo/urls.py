@@ -11,6 +11,7 @@ urlpatterns = [
     path('cbv/', views.TodoListApiView.as_view()),
     path('mixins/', views.TodoListMixinsApiview.as_view()),
     path('generics/', views.TodoListGenericApiView.as_view()),
+    path('users/', views.UserGenericApiView.as_view()),
     path('viewsets/', include(router.urls) ),
     path('cbv/<int:todo_id>', views.TodoDetailView.as_view()),
     path('mixins/<int:pk>', views.TodoDetailMixinsApiView.as_view()),
